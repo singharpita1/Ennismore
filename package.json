@@ -9,6 +9,24 @@
     "cy:test:electron": "cypress run --browser electron --headed"
   },
   "devDependencies": {
-    "cypress": "^12.12.0"
+    "@badeball/cypress-cucumber-preprocessor": "^13.1.0",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.1.5",
+    "@cypress/xpath": "^2.0.3",
+    "@testing-library/dom": "^8.17.1",
+    "cypress": "^10.11.0",
+    "cypress-if": "^1.10.4"
+  },
+  "cypress-cucumber-preprocessor": {
+    "filterSpecs": true,
+    "omitFiltered": true,
+    "nonGlobalStepDefinitions": false,
+    "testIsolation": true,
+    "stepDefinitions": "cypress/tests/**/*.js",
+    "html": {
+      "enabled": true
+    }
+  },
+  "dependencies": {
+    "@cypress/webpack-preprocessor": "^5.17.1"
   }
 }
