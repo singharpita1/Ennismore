@@ -1,0 +1,14 @@
+{
+  "name": "Ennismore",
+  "version": "1.0.0",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "npx cypress run",
+    "report": "node ./report.js",
+    "cy:test": "cypress run --browser chrome --headed",
+    "cy:test:electron": "cypress run --browser electron --headed"
+  },
+  "devDependencies": {
+    "cypress": "^12.12.0"
+  }
+}
