@@ -2,7 +2,6 @@ const amazonCheckout = {
     searchResults : '[data-component-type="s-search-result"]',
     primeLogo : '[class="a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal"]',
     addToCart : '#add-to-cart-button',
-    gotoSearchResultsItemPage : '[class="a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal"]',
     gotoCart : '#nav-cart',
     backToResults : '[id="breadcrumb-back-link"]',
     cartCount : '#sc-subtotal-label-buybox',
@@ -10,35 +9,34 @@ const amazonCheckout = {
     searchBox : '#twotabsearchtextbox',
     searchSubmit : '#nav-search-submit-button',
     resultInfo : '[data-component-type="s-result-info-bar"]',
+    proceedToCheckout : '#sc-buy-box-ptc-button',
+    email : '#ap_email'
 }
 
-function addItemsToBasket (products, numberOfItemToBeAdded){
+function addItemsToCart (product, numberOfItemToBeAdded){
     let basketCount = 0;
+    let itemsCount = 0
 
-    for(let i =0; i< products.length; i++) {
-        let itemsOfType = 0
+    searchItem(product)
+    cy.get(amazonCheckout.searchResults).each((element, index) => {
+        if (element.find(amazonCheckout.primeLogo).is(':visible')) {
+            basketCount += 1
+            itemsCount += 1
 
-        searchItem(products[i])
-        cy.get(amazonCheckout.searchResults).each((element, index) => {
-            if (element.find(amazonCheckout.primeLogo).is(':visible')) {
-                basketCount += 1
-                itemsOfType += 1
+            cy.get(amazonCheckout.searchResults).eq(index).find(amazonCheckout.primeLogo).click()
+            cy.get(amazonCheckout.addToCart).click()
+            cy.go('back')
+            cy.go('back')
 
-                cy.get(amazonCheckout.searchResults).eq(index).find(amazonCheckout.primeLogo).click()
-                cy.get(amazonCheckout.addToCart).click()
-                cy.go('back')
-                cy.go('back')
-
-                if (Number(itemsOfType) === Number(numberOfItemToBeAdded)) {
-                    return false
-                }
+            if (Number(itemsCount) === Number(numberOfItemToBeAdded)) {
+                return false
             }
+        }
 
-        })
-    }
+    })
 }
 
-function removeItemFromBasket(totalItem)
+function removeItemFromCart(totalItem)
 {
     cy.get(amazonCheckout.gotoCart).click();
     cy.get(amazonCheckout.cartCount).should('contain', totalItem.toString())
@@ -56,8 +54,13 @@ function searchItem(product){
         })
 }
 
+function  goToCheckoutPage(){
+    cy.get(amazonCheckout.proceedToCheckout).click();
+    cy.get(amazonCheckout.email).should('be.visible');
+}
 export {
     amazonCheckout,
-    addItemsToBasket,
-    removeItemFromBasket
+    addItemsToCart,
+    removeItemFromCart,
+    goToCheckoutPage
 }
