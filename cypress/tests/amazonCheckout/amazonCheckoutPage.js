@@ -17,14 +17,12 @@ export class AmazonCheckoutPage{
         let count = 0;
         let itemsCount = 0;
 
-        //search the item in amazon
         cy.get(this.searchBox).clear().type(product).then(() => {
             cy.get(this.searchSubmit).click();
             cy.get(this.resultInfo).should('be.visible')
             cy.get(this.searchResults).should('be.visible')
             cy.get(this.searchResults).should('have.length.at.least', 10);
 
-            //add the 3 item in cart which has prime logo
             cy.get(this.searchResults).each((element, index) => {
                 if (element.find(this.prime).is(':visible') && itemsCount < numberOfItemToBeAdded) {
                     count++
@@ -40,15 +38,12 @@ export class AmazonCheckoutPage{
     }
 
     goToShoppingBasketPage(total){
-        //go to shopping basket page
         cy.get(this.gotoCart).click();
         cy.get(this.cartCount).should('contain', total.toString())
     }
 
     deleteItemFromCart(total,numberOfItemsToBeDeleted){
-        // delete the item from cart
-        for(let i = 0; i< numberOfItemsToBeDeleted; i++)
-        {
+        for(let i = 0; i< numberOfItemsToBeDeleted; i++) {
             cy.get(this.deleteItem).eq(i).click({force: true});
             cy.get(this.cartCount).should('contain', (total - numberOfItemsToBeDeleted).toString());
         }
@@ -56,7 +51,6 @@ export class AmazonCheckoutPage{
     }
 
     proceedToCheckoutPage(){
-        //go to checkout page
         cy.get(this.proceedToCheckout).click();
         cy.get(this.email).should('be.visible');
     }
