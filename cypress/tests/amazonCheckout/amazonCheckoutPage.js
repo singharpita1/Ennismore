@@ -39,12 +39,20 @@ export class AmazonCheckoutPage{
         })
     }
 
-    deleteItemFromCart(){
-        // delete the item from cart
+    goToShoppingBasketPage(total){
+        //go to shopping basket page
         cy.get(this.gotoCart).click();
-        cy.get(this.cartCount).should('contain', '9')
-        cy.get(this.deleteItem).eq(0).click({force: true});
-        cy.get(this.cartCount).should('contain', '8');
+        cy.get(this.cartCount).should('contain', total.toString())
+    }
+
+    deleteItemFromCart(total,numberOfItemsToBeDeleted){
+        // delete the item from cart
+        for(let i = 0; i< numberOfItemsToBeDeleted; i++)
+        {
+            cy.get(this.deleteItem).eq(i).click({force: true});
+            cy.get(this.cartCount).should('contain', (total - numberOfItemsToBeDeleted).toString());
+        }
+
     }
 
     proceedToCheckoutPage(){

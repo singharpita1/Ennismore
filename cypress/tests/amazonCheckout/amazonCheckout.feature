@@ -1,6 +1,7 @@
 Feature: amazon
 
   Scenario: Add item to the basket and go to checkout page
-    Given I am on amazon website search for items and add to basket
-    When On basket page, delete an item
-    Then proceed to checkout
+  Given  I add "3" of each "teapot, headphones, dishwasher" item to my amazon basket
+  When I am on the shopping basket page
+  And  I remove "1" item from the shopping basket
+  Then I proceed to the checkout page
